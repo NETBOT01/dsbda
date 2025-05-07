@@ -1,0 +1,57 @@
+Step 1: Verify Scala (via Apache Spark setup)
+
+1. Open Terminal
+
+
+2. Check if Spark is in PATH:
+
+echo $PATH
+
+Ensure /home/student/DSBDAL/spark-3.5.1-bin-hadoop3/bin is included.
+
+
+3. Launch Spark Shell:
+
+spark-shell
+
+If it starts successfully and you get a scala> prompt, Scala and Spark are set up correctly.
+
+
+
+
+
+---
+
+Step 2: Execute Scala Word Count Program
+
+Option 1: One-by-one execution in Spark Shell
+
+1. Start Spark Shell:
+
+spark-shell
+
+
+2. Execute the following commands line by line:
+
+val inputfile = sc.textFile("/home/student/DSBDAL/wordcount_input.txt")
+val counts = inputfile.flatMap(line => line.split(" ")).map(word => (word, 1)).reduceByKey(+)
+counts.toDebugString
+counts.cache()
+counts.saveAsTextFile("output")
+
+
+
+Option 2: Execute Scala Program File
+
+1. Create a file named wordcount.scala with the following content:
+
+val inputfile = sc.textFile("/home/student/DSBDAL/wordcount_input.txt")
+val counts = inputfile.flatMap(line => line.split(" ")).map(word => (word, 1)).reduceByKey(+)
+counts.toDebugString
+counts.cache()
+counts.saveAsTextFile("output")
+
+
+2. Run it using:
+
+spark-shell < wordcount.scala
